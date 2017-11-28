@@ -1,0 +1,20 @@
+#!/bin/bash
+
+ltedevice="/dev/ttyUSB2"
+dial=acs
+msconf=/etc/lte/modeswitch.conf
+wvdialconf=/etc/lte/wvdial.conf
+
+modprobe usbserial vendor=0x0408 product=0xea47
+
+while true; do
+	if ip link show ppp0; then
+		ip route add 10.35.0.0/16 dev ppp0 scope link | true
+	elif [ -c $ltedevice ]; then
+		ps -p $! || (wvdial -C $wvdialconf $dial &)
+	elif lsusb -d "0408:ea47"; then
+		usb_modeswitch -v 0408 -p ea47 -c $msconf
+	fi
+	sleep 5
+done
+
