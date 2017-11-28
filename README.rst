@@ -10,6 +10,9 @@ Requirements
 
  * wvdial
  * usb_modeswitch
+ 
+sudo apt-get update
+sudo apt-get install ppp usb-modeswitch wvdial
 
 Install
 =======
